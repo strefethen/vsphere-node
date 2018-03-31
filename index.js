@@ -9,27 +9,27 @@ let username = 'administrator@vsphere.local',
 request.defaults({ strictSSL: false});
 
 function listVms() {
-	request({
-		url: `${host}/rest/vcenter/vm`,
-		strictSSL: false,
-		jar: true 
-	}, function(error, response, body) {
-		console.log(body);
-	});
+  request({
+  url: `${host}/rest/vcenter/vm`,
+  strictSSL: false,
+  jar: true 
+  }, function(error, response, body) {
+    console.log(body);
+  });
 }
 
 // Basic Auth to vSphere REST Endpoint, uses cookie for authentication
 request({
-		url : url,
-		method: 'POST',
-		strictSSL: false,
-		jar: true,
-		headers : {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				"Authorization" : "Basic " + new Buffer(`${username}:${password}`).toString("base64")
-		}
+    url : url,
+    method: 'POST',
+    strictSSL: false,
+    jar: true,
+    headers : {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "Authorization" : "Basic " + new Buffer(`${username}:${password}`).toString("base64")
+    }
   }, function (error, response, body) {
-   listVms();
+    listVms();
   }
 );
