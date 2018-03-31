@@ -24,6 +24,7 @@ async function callApi() {
   // Fetch details for the first vm
   if(vms.value.length > 0) {
     let vm = await get(`${host}/rest/vcenter/vm/${vms.value[0].vm}`);
+    console.log(`\nDetails of VM: ${vms.value[0].vm}`);
     console.log(vm);
   }
 }
