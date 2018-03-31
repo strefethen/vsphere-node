@@ -1,11 +1,9 @@
 var request = require('request-promise-native');
-
-var request = request.defaults({strictSSL: false, jar: true});
+request = request.defaults({strictSSL: false, jar: true});
 
 let host = "https://sc2-rdops-vm06-dhcp-195-173";
-
-let username = 'administrator@vsphere.local',
-    password = 'Admin!23';
+let username = 'administrator@vsphere.local';
+let password = 'Admin!23';
 
 async function listVms() {
   return await request({ url: `${host}/rest/vcenter/vm` });
