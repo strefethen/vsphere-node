@@ -10,12 +10,19 @@ request.defaults({ strictSSL: false});
 
 function listVms() {
   request({
-  url: `${host}/rest/vcenter/vm`,
-  strictSSL: false,
-  jar: true 
-  }, function(error, response, body) {
-    console.log(body);
-  });
+    url: `${host}/rest/vcenter/vm`,
+    strictSSL: false,
+    jar: true 
+    }, function(error, response, body) {
+      if(error) {
+        console.log(`Error: ${error.message}`);
+      } else if(response.statusCode == 200) {
+        console.log(body);
+      } else {
+        console.log(`Error: ${response.statusMessage}`);
+      }
+    }
+  );
 }
 
 // Basic Auth to vSphere REST Endpoint, uses cookie for authentication
@@ -30,6 +37,12 @@ request({
       "Authorization" : "Basic " + new Buffer(`${username}:${password}`).toString("base64")
     }
   }, function (error, response, body) {
-    listVms();
+    if(error) {
+      console.log(`Error: ${error.message}`);
+    } else if(response.statusCode == 200) {
+      listVms();
+    } else {
+      console.log(`Error: ${response.statusMessage}`);
+    }
   }
 );
