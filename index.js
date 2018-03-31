@@ -1,18 +1,16 @@
 var request = require('request');
 
+var request = request.defaults({strictSSL: false, jar: true});
+
 let host = "https://sc2-rdops-vm06-dhcp-195-173";
 
 let username = 'administrator@vsphere.local',
     password = 'Admin!23',
     url = `${host}/rest/com/vmware/cis/session`;
 
-request.defaults({ strictSSL: false});
-
 function listVms() {
   request({
     url: `${host}/rest/vcenter/vm`,
-    strictSSL: false,
-    jar: true 
     }, function(error, response, body) {
       if(error) {
         console.log(`Error: ${error.message}`);
@@ -29,8 +27,6 @@ function listVms() {
 request({
     url : url,
     method: 'POST',
-    strictSSL: false,
-    jar: true,
     headers : {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
