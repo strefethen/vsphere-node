@@ -26,13 +26,13 @@ async function callApi() {
 
   // Fetch a list of VMs
   let vms = JSON.parse(await get(`${host}/rest/vcenter/vm`));
-  console.log(JSON.stringify(vms));
+  console.log(JSON.stringify(vms, null, 2));
 
   // Fetch details of the first vm in the list
   if(vms.value.length > 0) {
-    let vm = await get(`${host}/rest/vcenter/vm/${vms.value[0].vm}`);
+    let vm = JSON.parse(await get(`${host}/rest/vcenter/vm/${vms.value[0].vm}`));
     console.log(`\nDetails of VM: ${vms.value[0].vm}`);
-    console.log(vm);
+    console.log(JSON.stringify(vm, null, 2));
   }
 }
 
