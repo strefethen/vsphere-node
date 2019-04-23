@@ -3,13 +3,14 @@ var request = require('request-promise-native');
 // Disable SSL for simplicity and enable the cookie jar for REST API session ID
 request = request.defaults({strictSSL: false, jar: true});
 
-let host = "https://sc2-rdops-vm06-dhcp-195-173";
+let host = "https://10.160.105.69";
 let username = 'administrator@vsphere.local';
 let password = 'Admin!23';
 
 // Generic HTTP GET
-async function get(url) {
-  return await request({ url: url });
+async function get(path) {
+  let result = await request({ url: `${host}/${path}` });
+  return JSON.parse(result);
 }
 
 // Login using Basic Auth
@@ -21,19 +22,31 @@ async function login() {
   });
 }
 
+function log(obj) {
+  console.log(JSON.stringify(obj, null, 2));
+}
+
 // Make a few API calls
 async function callApi() {
 
   // Fetch a list of VMs
-  let vms = JSON.parse(await get(`${host}/rest/vcenter/vm`));
-  console.log(JSON.stringify(vms, null, 2));
+  let vms = await get('rest/vcenter/vm');
+  log(vms);
+
+  let vm = null;
 
   // Fetch details of the first vm in the list
   if(vms.value.length > 0) {
-    let vm = JSON.parse(await get(`${host}/rest/vcenter/vm/${vms.value[0].vm}`));
+    vm = await get(`rest/vcenter/vm/${vms.value[0].vm}`);
     console.log(`\nDetails of VM: ${vms.value[0].vm}`);
-    console.log(JSON.stringify(vm, null, 2));
+    log(vm);
   }
+  let consolecli = await get('rest/appliance/access/consolecli');
+  console.log(consolecli.value); // <- .enabled   
+
+  let power = await get(`rest/vcenter/vm/${vms.value[0].vm}/power`);
+  console.log(power.value.state)
+
 }
 
 login().then(() => {
